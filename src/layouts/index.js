@@ -52,7 +52,7 @@ const SiteLayout = ({ children, location: { pathname } }) => {
           </StyledMenu>
         </StyledHeader>
         <Content>{children}</Content>
-        <Footer style={{ textAlign: "center" }}>
+        <Footer style={{ textAlign: "center", marginTop: "30px" }}>
           Mentored @ divdev.io ©2020 Created by Dimitri Ivashchuk
         </Footer>
       </Layout>
