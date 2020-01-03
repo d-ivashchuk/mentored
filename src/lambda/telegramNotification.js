@@ -2,6 +2,13 @@ const axios = require("axios")
 
 exports.handler = (event, context, callback) => {
   const receivedBody = JSON.parse(event.body)
+  const escapeChars = string => {
+    return string
+      .replace("_", "\\_")
+      .replace("*", "\\*")
+      .replace("[", "\\[")
+      .replace("`", "\\`")
+  }
 
   const contactDetails = `*App* 📱: _${receivedBody.appContext.toUpperCase()}_\n\n*Email* 📧: ${
     receivedBody.email
@@ -9,11 +16,11 @@ exports.handler = (event, context, callback) => {
 
   const messengerDetails = `${
     receivedBody.telegramHandler
-      ? `\n*Telegram handler* 👤: ${receivedBody.telegramHandler}`
+      ? `\n*Telegram handler* 👤: ${escapeChars(receivedBody.telegramHandler)}`
       : ""
   }\n${
     receivedBody.twitterHandler
-      ? `*Twitter handler* 👤: ${receivedBody.twitterHandler}`
+      ? `*Twitter handler* 👤: ${escapeChars(receivedBody.twitterHandler)}`
       : ""
   }\n`
 

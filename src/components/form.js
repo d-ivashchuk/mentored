@@ -76,7 +76,27 @@ const SubmitForm = () => {
                 }, 2000)
               }
             })
-          console.log(values)
+          axios
+            .post("/.netlify/functions/createMentee", {
+              ...values,
+            })
+            .then(x => {
+              setTimeout(() => {
+                actions.setSubmitting(false)
+                message.success(
+                  "Thanks for your desire! I will get back to you in case you get selected!!!"
+                )
+              }, 2000)
+            })
+            .catch(err => {
+              if (err) {
+                setTimeout(() => {
+                  actions.setSubmitting(false)
+
+                  message.warning("Something went wrong")
+                }, 2000)
+              }
+            })
           setTimeout(() => {
             actions.setSubmitting(false)
           }, 2000)
