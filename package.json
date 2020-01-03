@@ -7,10 +7,15 @@
   "dependencies": {
     "@mdx-js/mdx": "^1.5.1",
     "@mdx-js/react": "^1.5.1",
-    "antd": "^3.23.6",
+    "antd": "^3.26.6",
+    "babel-plugin-import": "^1.12.2",
     "babel-plugin-styled-components": "^1.10.6",
+    "formik": "^2.1.1",
+    "formik-antd": "^1.6.3",
     "gatsby": "^2.15.34",
     "gatsby-image": "^2.2.25",
+    "gatsby-plugin-antd": "^2.1.0",
+    "gatsby-plugin-less": "^3.0.10",
     "gatsby-plugin-manifest": "^2.2.21",
     "gatsby-plugin-mdx": "^1.0.50",
     "gatsby-plugin-offline": "^3.0.13",
@@ -19,13 +24,15 @@
     "gatsby-plugin-styled-components": "^3.1.9",
     "gatsby-source-filesystem": "^2.1.31",
     "gatsby-transformer-sharp": "^2.2.21",
+    "less": "^3.10.3",
+    "less-loader": "^5.0.0",
     "prop-types": "^15.7.2",
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
     "react-helmet": "^5.2.1",
     "react-responsive-carousel": "^3.1.50",
     "styled-components": "^4.4.0",
-    "styled-system": "^5.1.2"
+    "yup": "^0.28.0"
   },
   "devDependencies": {
     "prettier": "^1.18.2"
