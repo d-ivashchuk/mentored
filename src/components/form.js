@@ -1,19 +1,11 @@
 import React from "react"
 import styled from "styled-components"
 import * as yup from "yup"
-
-import {
-  Form,
-  Input,
-  InputNumber,
-  Checkbox,
-  Rate,
-  Select,
-  SubmitButton,
-} from "formik-antd"
+import axios from "axios"
+import { Form, Input, Select, SubmitButton } from "formik-antd"
 import { Formik } from "formik"
 
-import { Typography, Row, Col } from "antd"
+import { Typography, message } from "antd"
 const { Title } = Typography
 
 const StyledForm = styled(Form)`
@@ -62,6 +54,28 @@ const SubmitForm = () => {
       <Formik
         initialValues={{}}
         onSubmit={(values, actions) => {
+          axios
+            .post("/.netlify/functions/telegramNotification", {
+              ...values,
+              appContext: "mentored.divdev.io",
+            })
+            .then(x => {
+              setTimeout(() => {
+                actions.setSubmitting(false)
+                message.success(
+                  "Thanks for your desire! I will get back to you in case you get selected!!!"
+                )
+              }, 2000)
+            })
+            .catch(err => {
+              if (err) {
+                setTimeout(() => {
+                  actions.setSubmitting(false)
+
+                  message.warning("Something went wrong")
+                }, 2000)
+              }
+            })
           console.log(values)
           setTimeout(() => {
             actions.setSubmitting(false)
@@ -108,6 +122,17 @@ const SubmitForm = () => {
               <Input
                 placeholder="Let's hangout together on Twitter :)"
                 name="twitterHandler"
+              />
+            </Form.Item>
+            <Form.Item
+              colon={false}
+              {...itemLayout}
+              label="Telegram handler"
+              name="telegramHandler"
+            >
+              <Input
+                placeholder="It's easier for me to contact you via telegram"
+                name="telegramHandler"
               />
             </Form.Item>
             <Form.Item
