@@ -8,11 +8,22 @@ import { Formik } from "formik"
 import { Typography, message } from "antd"
 const { Title } = Typography
 
+const StyledContainer = styled.div`
+  margin-top: 20px;
+`
+
 const StyledForm = styled(Form)`
   max-width: 500px;
-  margin: auto;
+  margin: auto !important;
   @media (max-width: 600px) {
-    padding: 10px;
+    padding: 15px;
+    > div {
+      margin-bottom: 8px;
+    }
+    label {
+      position: relative;
+      top: 9px;
+    }
   }
   button {
     display: block;
@@ -40,6 +51,7 @@ const SignupSchema = yup.object().shape({
     .min(0)
     .max(130),
   experience: yup.number().required(),
+  git: yup.string().url(),
   path: yup.number().required(),
   dedication: yup.number().required(),
   outcome: yup.string().required(),
@@ -47,7 +59,7 @@ const SignupSchema = yup.object().shape({
 
 const SubmitForm = () => {
   return (
-    <div>
+    <StyledContainer>
       <Title style={{ textAlign: "center" }} level={2}>
         Get mentorship slot <br /> from Dimitri
       </Title>{" "}
@@ -187,6 +199,17 @@ const SubmitForm = () => {
               </Select>
             </Form.Item>
             <Form.Item
+              colon={false}
+              {...itemLayout}
+              label="Github/gitlab"
+              name="git"
+            >
+              <Input
+                placeholder="Show off your repositories, if you already have some!"
+                name="git"
+              />
+            </Form.Item>
+            <Form.Item
               required
               colon={false}
               {...itemLayout}
@@ -242,7 +265,7 @@ const SubmitForm = () => {
           </StyledForm>
         )}
       />
-    </div>
+    </StyledContainer>
   )
 }
 

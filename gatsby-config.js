@@ -19,6 +19,7 @@ module.exports = {
   },
   plugins: [
     `gatsby-plugin-react-helmet`,
+    `gatsby-plugin-layout`,
     {
       resolve: "gatsby-plugin-antd",
       options: {
@@ -31,8 +32,6 @@ module.exports = {
         javascriptEnabled: true,
         modifyVars: {
           // "primary-color": "#663399",
-          "font-family": "Arial",
-          "layout-body-background": "#66ff79",
         },
       },
     },

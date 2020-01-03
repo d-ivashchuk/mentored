@@ -25,6 +25,9 @@ const schema = new mongoose.Schema({
       type: Number,
       required: [true, "Experience field is required"],
     },
+    git: {
+      type: String,
+    },
     path: {
       type: Number,
       required: [true, "Path field is required"],
