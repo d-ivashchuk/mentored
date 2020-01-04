@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import styled from "styled-components"
 import * as yup from "yup"
 import axios from "axios"
@@ -7,6 +7,7 @@ import { Formik } from "formik"
 import useWindowSize from "../hooks/useWindowSize"
 
 import { Typography, message } from "antd"
+import Upload from "./upload"
 const { Title } = Typography
 
 const StyledContainer = styled.div`
@@ -55,6 +56,7 @@ const SignupSchema = yup.object().shape({
 })
 
 const SubmitForm = () => {
+  const [file, setFile] = useState()
   const size = useWindowSize()
   const itemLayout =
     size.width > 800
@@ -71,10 +73,12 @@ const SubmitForm = () => {
       <Formik
         initialValues={{}}
         onSubmit={(values, actions) => {
+          const contentType = file.type
+          console.log(file, contentType)
+          actions.setSubmitting(false)
           axios
-            .post("/.netlify/functions/telegramNotification", {
-              ...values,
-              appContext: "mentored.divdev.io",
+            .post("/.netlify/functions/uploadFile", {
+              file,
             })
             .then(x => {
               setTimeout(() => {
@@ -93,30 +97,52 @@ const SubmitForm = () => {
                 }, 2000)
               }
             })
-          axios
-            .post("/.netlify/functions/createMentee", {
-              ...values,
-            })
-            .then(x => {
-              setTimeout(() => {
-                actions.setSubmitting(false)
-                message.success(
-                  "Thanks for your desire! I will get back to you in case you get selected!!!"
-                )
-              }, 2000)
-            })
-            .catch(err => {
-              if (err) {
-                setTimeout(() => {
-                  actions.setSubmitting(false)
+          // axios
+          //   .post("/.netlify/functions/telegramNotification", {
+          //     ...values,
+          //     appContext: "mentored.divdev.io",
+          //   })
+          //   .then(x => {
+          //     setTimeout(() => {
+          //       actions.setSubmitting(false)
+          //       message.success(
+          //         "Thanks for your desire! I will get back to you in case you get selected!!!"
+          //       )
+          //     }, 2000)
+          //   })
+          //   .catch(err => {
+          //     if (err) {
+          //       setTimeout(() => {
+          //         actions.setSubmitting(false)
 
-                  message.warning("Something went wrong")
-                }, 2000)
-              }
-            })
-          setTimeout(() => {
-            actions.setSubmitting(false)
-          }, 2000)
+          //         message.warning("Something went wrong")
+          //       }, 2000)
+          //     }
+          //   })
+          // axios
+          //   .post("/.netlify/functions/createMentee", {
+          //     ...values,
+          //   })
+          //   .then(x => {
+          //     setTimeout(() => {
+          //       actions.setSubmitting(false)
+          //       message.success(
+          //         "Thanks for your desire! I will get back to you in case you get selected!!!"
+          //       )
+          //     }, 2000)
+          //   })
+          //   .catch(err => {
+          //     if (err) {
+          //       setTimeout(() => {
+          //         actions.setSubmitting(false)
+
+          //         message.warning("Something went wrong")
+          //       }, 2000)
+          //     }
+          //   })
+          // setTimeout(() => {
+          //   actions.setSubmitting(false)
+          // }, 2000)
         }}
         validationSchema={SignupSchema}
         render={({ values, errors }) => (
@@ -266,6 +292,7 @@ const SubmitForm = () => {
                 name="outcome"
               />
             </Form.Item>
+            <Upload setFile={setFile} />
             <SubmitButton size="large">Apply for mentorship</SubmitButton>
           </StyledForm>
         )}
