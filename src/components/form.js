@@ -4,6 +4,7 @@ import * as yup from "yup"
 import axios from "axios"
 import { Form, Input, Select, SubmitButton } from "formik-antd"
 import { Formik } from "formik"
+import useWindowSize from "../hooks/useWindowSize"
 
 import { Typography, message } from "antd"
 const { Title } = Typography
@@ -22,7 +23,7 @@ const StyledForm = styled(Form)`
     }
     label {
       position: relative;
-      top: 9px;
+      top: 3px;
     }
   }
   button {
@@ -30,10 +31,6 @@ const StyledForm = styled(Form)`
     margin: auto;
   }
 `
-const itemLayout = {
-  labelCol: { span: 6 },
-  wrapperCol: { span: 18 },
-}
 
 const SignupSchema = yup.object().shape({
   name: yup
@@ -58,10 +55,18 @@ const SignupSchema = yup.object().shape({
 })
 
 const SubmitForm = () => {
+  const size = useWindowSize()
+  const itemLayout =
+    size.width > 800
+      ? {
+          labelCol: { span: 6 },
+          wrapperCol: { span: 18 },
+        }
+      : {}
   return (
     <StyledContainer>
       <Title style={{ textAlign: "center" }} level={2}>
-        Get mentorship slot <br /> from Dimitri
+        Apply for mentorship slot
       </Title>{" "}
       <Formik
         initialValues={{}}
@@ -115,7 +120,7 @@ const SubmitForm = () => {
         }}
         validationSchema={SignupSchema}
         render={({ values, errors }) => (
-          <StyledForm layout="horizontal">
+          <StyledForm layout={size.width > 800 ? "horizontal" : "vertical"}>
             <Form.Item
               colon={false}
               required

@@ -3,7 +3,7 @@ import { useStaticQuery, graphql } from "gatsby"
 import Img from "gatsby-image"
 import styled from "styled-components"
 
-import { Typography, Tag } from "antd"
+import { Typography, Tag, Card } from "antd"
 
 const { Title } = Typography
 
@@ -45,24 +45,26 @@ const MentorCard = () => {
   return (
     <StyledInfo>
       {" "}
-      <StyledImage fluid={data.file.childImageSharp.fluid} />
-      <Title style={{ textAlign: "center" }} level={3}>
-        {" "}
-        Dimitri Ivashchuk
-      </Title>
-      <div style={{ textAlign: "center" }}>
-        Fullstack engineer/ blogger /egghead.io instructor
-      </div>
-      <StyledStack>
-        <Tag color="red">react</Tag>
-        <Tag color="magenta">graphql</Tag>
-        <Tag color="blue">docker</Tag>
-        <Tag color="purple">gatsby</Tag>
-        <Tag color="gold">serverless</Tag>
-        <Tag color="green">mongoDB</Tag>
-        <Tag color="orange">node</Tag>
-        <Tag color="gray">cypress</Tag>
-      </StyledStack>
+      <Card style={{ width: "300px", margin: "auto" }}>
+        <StyledImage fluid={data.file.childImageSharp.fluid} />
+        <Title style={{ textAlign: "center" }} level={3}>
+          {" "}
+          Dimitri Ivashchuk
+        </Title>
+        <div style={{ textAlign: "center" }}>
+          Fullstack engineer/ blogger /egghead.io instructor
+        </div>
+        <StyledStack>
+          <Tag color="red">react</Tag>
+          <Tag color="magenta">graphql</Tag>
+          <Tag color="blue">docker</Tag>
+          <Tag color="purple">gatsby</Tag>
+          <Tag color="gold">serverless</Tag>
+          <Tag color="green">mongoDB</Tag>
+          <Tag color="orange">node</Tag>
+          <Tag color="gray">cypress</Tag>
+        </StyledStack>
+      </Card>
     </StyledInfo>
   )
 }

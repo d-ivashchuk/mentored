@@ -9,7 +9,7 @@ const { Title, Paragraph } = Typography
 const StyledContainer = styled.div`
   max-width: 700px;
   margin: 30px auto;
-  @media (max-width: 600px) {
+  @media (max-width: 900px) {
     padding: 0 30px;
   }
   div {
