@@ -2,6 +2,7 @@ import s3 from "./digitalOcean"
 
 exports.handler = async (event, context, callback) => {
   const params = JSON.parse(event.body)
+  console.log(params.type, params.name)
 
   const s3Params = {
     Bucket: "mentored",
@@ -11,7 +12,6 @@ exports.handler = async (event, context, callback) => {
   }
 
   const uploadURL = s3.getSignedUrl("putObject", s3Params)
-  console.log(uploadURL)
 
   return callback(null, {
     statusCode: 200,

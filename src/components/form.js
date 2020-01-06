@@ -57,6 +57,7 @@ const SignupSchema = yup.object().shape({
 
 const SubmitForm = () => {
   const [file, setFile] = useState()
+  console.log(file)
   const size = useWindowSize()
   const itemLayout =
     size.width > 800
@@ -73,23 +74,21 @@ const SubmitForm = () => {
       <Formik
         initialValues={{}}
         onSubmit={(values, actions) => {
-          const formData = new FormData()
-          formData.append("file", file[0])
           actions.setSubmitting(false)
           axios
             .post("/.netlify/functions/uploadFile", {
-              name: file[0].name,
-              type: file[0].type,
+              name: file.name,
+              type: file.type,
             })
             .then(response => {
               const options = {
                 headers: {
-                  "Content-Type": file[0].type,
+                  "Content-Type": file.type,
                   "x-amz-acl": "public-read",
                 },
               }
               axios
-                .put(response.data.uploadURL, formData, options)
+                .put(response.data.uploadURL, file, options)
                 .then()
                 .catch(err => console.log(err))
             })
@@ -100,13 +99,6 @@ const SubmitForm = () => {
         }}
         render={({ values, errors }) => (
           <StyledForm layout={size.width > 800 ? "horizontal" : "vertical"}>
-            <input
-              label="Upload file"
-              type="file"
-              onChange={e => {
-                setFile(e.target.files)
-              }}
-            />
             <Upload setFile={setFile} />
             <SubmitButton size="large">Apply for mentorship</SubmitButton>
           </StyledForm>

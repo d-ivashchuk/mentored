@@ -19,10 +19,16 @@ const UploadFile = ({ setFile }) => {
       if (info.file.status !== "uploading") {
       }
       if (info.file.status === "done") {
-        setFile(info.file)
         message.success(`${info.file.name} file uploaded successfully`)
       } else if (info.file.status === "error") {
         message.error(`${info.file.name} file upload failed.`)
+      }
+    },
+    beforeUpload(file) {
+      if (file) {
+        setFile(file)
+      } else {
+        message.error(`File upload failed.`)
       }
     },
   }
