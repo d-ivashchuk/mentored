@@ -57,7 +57,6 @@ const SignupSchema = yup.object().shape({
 
 const SubmitForm = () => {
   const [file, setFile] = useState()
-  console.log(file)
   const size = useWindowSize()
   const itemLayout =
     size.width > 800
@@ -78,16 +77,25 @@ const SubmitForm = () => {
           formData.append("file", file[0])
           actions.setSubmitting(false)
           axios
-            .post("/.netlify/functions/uploadFile", formData, {
-              headers: {
-                "Content-Type": "multipart/form-data",
-              },
+            .post("/.netlify/functions/uploadFile", {
+              name: file[0].name,
+              type: file[0].type,
             })
             .then(response => {
-              // handle your response
+              const options = {
+                headers: {
+                  "Content-Type": file[0].type,
+                  "x-amz-acl": "public-read",
+                },
+              }
+              axios
+                .put(response.data.uploadURL, formData, options)
+                .then()
+                .catch(err => console.log(err))
             })
-            .catch(() => {
-              // handle your error
+
+            .catch(err => {
+              console.log(err)
             })
         }}
         render={({ values, errors }) => (
