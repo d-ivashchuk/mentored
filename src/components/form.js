@@ -57,7 +57,6 @@ const SignupSchema = yup.object().shape({
 
 const SubmitForm = () => {
   const [file, setFile] = useState()
-  console.log(file)
   const size = useWindowSize()
   const itemLayout =
     size.width > 800
@@ -74,31 +73,221 @@ const SubmitForm = () => {
       <Formik
         initialValues={{}}
         onSubmit={(values, actions) => {
-          actions.setSubmitting(false)
           axios
-            .post("/.netlify/functions/uploadFile", {
-              name: file.name,
-              type: file.type,
+            .post("/.netlify/functions/telegramNotification", {
+              ...values,
+              appContext: "mentored.divdev.io",
             })
-            .then(response => {
-              const options = {
-                headers: {
-                  "Content-Type": file.type,
-                  "x-amz-acl": "public-read",
-                },
-              }
-              axios
-                .put(response.data.uploadURL, file, options)
-                .then()
-                .catch(err => console.log(err))
+            .then(x => {
+              setTimeout(() => {
+                actions.setSubmitting(false)
+                message.success(
+                  "Thanks for your desire! I will get back to you in case you get selected!!!"
+                )
+              }, 2000)
             })
-
             .catch(err => {
-              console.log(err)
+              if (err) {
+                setTimeout(() => {
+                  actions.setSubmitting(false)
+
+                  message.warning("Something went wrong")
+                }, 2000)
+              }
             })
+          axios
+            .post("/.netlify/functions/createMentee", {
+              ...values,
+            })
+            .then(x => {
+              axios
+                .post("/.netlify/functions/uploadFile", {
+                  name: file.name,
+                  type: file.type,
+                })
+                .then(response => {
+                  const options = {
+                    headers: {
+                      "Content-Type": file.type,
+                      "x-amz-acl": "public-read",
+                    },
+                  }
+                  axios
+                    .put(response.data.uploadURL, file, options)
+                    .then()
+                    .catch(err => console.log(err))
+                })
+                .catch(err => {
+                  console.log(err)
+                })
+              setTimeout(() => {
+                actions.setSubmitting(false)
+                message.success(
+                  "Thanks for your desire! I will get back to you in case you get selected!!!"
+                )
+              }, 2000)
+            })
+            .catch(err => {
+              if (err) {
+                setTimeout(() => {
+                  actions.setSubmitting(false)
+
+                  message.warning("Something went wrong")
+                }, 2000)
+              }
+            })
+          setTimeout(() => {
+            actions.setSubmitting(false)
+          }, 2000)
         }}
+        validationSchema={SignupSchema}
         render={({ values, errors }) => (
           <StyledForm layout={size.width > 800 ? "horizontal" : "vertical"}>
+            <Form.Item
+              colon={false}
+              required
+              {...itemLayout}
+              label="Name"
+              name="name"
+              showValidateSuccess
+            >
+              <Input name="name" />
+            </Form.Item>
+            <Form.Item
+              colon={false}
+              required
+              {...itemLayout}
+              label="E-mail"
+              name="email"
+              showValidateSuccess
+            >
+              <Input name="email" />
+            </Form.Item>
+            <Form.Item
+              colon={false}
+              {...itemLayout}
+              label="Age"
+              name="age"
+              showValidateSuccess
+            >
+              <Input name="age" />
+            </Form.Item>
+            <Form.Item
+              colon={false}
+              {...itemLayout}
+              label="Twitter handler"
+              name="twitterHandler"
+            >
+              <Input
+                placeholder="Let's hangout together on Twitter :)"
+                name="twitterHandler"
+              />
+            </Form.Item>
+            <Form.Item
+              colon={false}
+              {...itemLayout}
+              label="Telegram handler"
+              name="telegramHandler"
+            >
+              <Input
+                placeholder="It's easier for me to contact you via telegram"
+                name="telegramHandler"
+              />
+            </Form.Item>
+            <Form.Item
+              colon={false}
+              {...itemLayout}
+              label="Background"
+              name="background"
+            >
+              <Input
+                placeholder="What were you good at in school/university"
+                name="background"
+              />
+            </Form.Item>
+
+            <Form.Item
+              required
+              colon={false}
+              {...itemLayout}
+              label="Experience"
+              name="experience"
+              showValidateSuccess
+            >
+              <Select
+                placeholder="How long are you doing development"
+                name="experience"
+                style={{ width: "100%" }}
+              >
+                <Select.Option value={1}>No experience</Select.Option>
+                <Select.Option value={2}>Less than 1 year</Select.Option>
+                <Select.Option value={3}>Less than 2 years</Select.Option>
+                <Select.Option value={4}>More than 2 years</Select.Option>
+              </Select>
+            </Form.Item>
+            <Form.Item
+              colon={false}
+              {...itemLayout}
+              label="Github/gitlab"
+              name="git"
+            >
+              <Input
+                placeholder="Show off your repositories, if you already have some!"
+                name="git"
+              />
+            </Form.Item>
+            <Form.Item
+              required
+              colon={false}
+              {...itemLayout}
+              label="Preferred path"
+              name="path"
+              showValidateSuccess
+            >
+              <Select
+                name="path"
+                style={{ width: "100%" }}
+                placeholder="What do you want to learn"
+              >
+                <Select.Option value={1}>Front end</Select.Option>
+                <Select.Option value={2}>Backend</Select.Option>
+                <Select.Option value={3}>Dev ops</Select.Option>
+                <Select.Option value={4}>Mobile applications</Select.Option>
+              </Select>
+            </Form.Item>
+            <Form.Item
+              required
+              colon={false}
+              {...itemLayout}
+              label="Dedicated time"
+              name="dedication"
+              showValidateSuccess
+            >
+              <Select
+                name="dedication"
+                style={{ width: "100%" }}
+                placeholder="Dedicated time"
+              >
+                <Select.Option value={1}>1 hour</Select.Option>
+                <Select.Option value={2}>2 hours</Select.Option>
+                <Select.Option value={3}>4 hours</Select.Option>
+                <Select.Option value={4}>8 hours</Select.Option>
+              </Select>
+            </Form.Item>
+
+            <Form.Item
+              required
+              colon={false}
+              {...itemLayout}
+              label="Outcome"
+              name="outcome"
+              showValidateSuccess
+            >
+              <Input.TextArea
+                placeholder="What you want to achieve from this mentorship"
+                name="outcome"
+              />
+            </Form.Item>
             <Upload setFile={setFile} />
             <SubmitButton size="large">Apply for mentorship</SubmitButton>
           </StyledForm>
