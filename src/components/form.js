@@ -2,8 +2,11 @@ import React, { useState } from "react"
 import styled from "styled-components"
 import * as yup from "yup"
 import axios from "axios"
+import moment from "moment"
+import { navigate } from "gatsby"
 import { Form, Input, Select, SubmitButton } from "formik-antd"
 import { Formik } from "formik"
+
 import useWindowSize from "../hooks/useWindowSize"
 
 import { Typography, message } from "antd"
@@ -58,6 +61,15 @@ const SignupSchema = yup.object().shape({
 const SubmitForm = () => {
   const [file, setFile] = useState()
   const size = useWindowSize()
+  const formatFilename = filename => {
+    const date = moment().format("YYYYMMDD")
+    const randomString = Math.random()
+      .toString(36)
+      .substring(2, 7)
+    const cleanFileName = filename.toLowerCase().replace(/[^a-z0-9]/g, "-")
+    const newFilename = `applicantCV/${date}-${randomString}-${cleanFileName}`
+    return newFilename.substring(0, 60)
+  }
   const itemLayout =
     size.width > 800
       ? {
@@ -81,9 +93,6 @@ const SubmitForm = () => {
             .then(x => {
               setTimeout(() => {
                 actions.setSubmitting(false)
-                message.success(
-                  "Thanks for your desire! I will get back to you in case you get selected!!!"
-                )
               }, 2000)
             })
             .catch(err => {
@@ -100,12 +109,17 @@ const SubmitForm = () => {
               ...values,
             })
             .then(x => {
+              navigate("/success/")
               axios
                 .post("/.netlify/functions/uploadFile", {
-                  name: file.name,
+                  name: formatFilename(file.name),
                   type: file.type,
                 })
                 .then(response => {
+                  actions.setSubmitting(false)
+                  message.success(
+                    "Thanks for your desire! I will get back to you in case you get selected!!!"
+                  )
                   const options = {
                     headers: {
                       "Content-Type": file.type,
@@ -120,12 +134,6 @@ const SubmitForm = () => {
                 .catch(err => {
                   console.log(err)
                 })
-              setTimeout(() => {
-                actions.setSubmitting(false)
-                message.success(
-                  "Thanks for your desire! I will get back to you in case you get selected!!!"
-                )
-              }, 2000)
             })
             .catch(err => {
               if (err) {
