@@ -15,7 +15,12 @@ const StyledUpload = styled(Upload)`
 const UploadFile = ({ setFile }) => {
   const props = {
     name: "file",
+    action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
+    headers: {
+      authorization: "authorization-text",
+    },
     onChange(info) {
+      console.log(info)
       if (info.file.status !== "uploading") {
       }
       if (info.file.status === "done") {
@@ -28,7 +33,7 @@ const UploadFile = ({ setFile }) => {
       if (file) {
         setFile(file)
       } else {
-        message.error(`File upload failed.`)
+        message.error(`Qwe?`)
       }
     },
   }

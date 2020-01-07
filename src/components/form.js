@@ -9,7 +9,7 @@ import { Formik } from "formik"
 
 import useWindowSize from "../hooks/useWindowSize"
 
-import { Typography, message } from "antd"
+import { Typography, message, Button, Icon } from "antd"
 import Upload from "./upload"
 const { Title } = Typography
 
@@ -33,6 +33,23 @@ const StyledForm = styled(Form)`
   button {
     display: block;
     margin: auto;
+  }
+`
+
+const StyledUpload = styled.div`
+  position: relative;
+  overflow: hidden;
+  button {
+    margin: 8px auto;
+    cursor: pointer;
+  }
+
+  input[type="file"] {
+    font-size: 100px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
   }
 `
 
@@ -176,6 +193,7 @@ const SubmitForm = () => {
               {...itemLayout}
               label="Age"
               name="age"
+              required
               showValidateSuccess
             >
               <Input name="age" />
@@ -296,7 +314,23 @@ const SubmitForm = () => {
                 name="outcome"
               />
             </Form.Item>
-            <Upload setFile={setFile} />
+            <StyledUpload>
+              <Button>
+                {" "}
+                <Icon type="upload" /> Upload your CV
+              </Button>
+              <div style={{ textAlign: "center", marginBottom: "8px" }}>
+                {file && file.name}
+              </div>
+              <input
+                label="Upload file"
+                type="file"
+                onChange={e => {
+                  setFile(e.target.files[0])
+                  message.success("File uploaded!")
+                }}
+              />
+            </StyledUpload>
             <SubmitButton size="large">Apply for mentorship</SubmitButton>
           </StyledForm>
         )}
