@@ -35,6 +35,11 @@ const StyledForm = styled(Form)`
     margin: auto;
   }
 `
+const StyledFix = styled.div`
+  span {
+    top: 6px !important;
+  }
+`
 
 const StyledUpload = styled.div`
   position: relative;
@@ -301,19 +306,21 @@ const SubmitForm = () => {
               </Select>
             </Form.Item>
 
-            <Form.Item
-              required
-              colon={false}
-              {...itemLayout}
-              label="Outcome"
-              name="outcome"
-              showValidateSuccess
-            >
-              <Input.TextArea
-                placeholder="What you want to achieve from this mentorship"
+            <StyledFix>
+              <Form.Item
+                required
+                colon={false}
+                {...itemLayout}
+                label="Outcome"
                 name="outcome"
-              />
-            </Form.Item>
+                showValidateSuccess
+              >
+                <Input.TextArea
+                  placeholder="What you want to achieve from this mentorship"
+                  name="outcome"
+                />
+              </Form.Item>
+            </StyledFix>
             <StyledUpload>
               <Button>
                 {" "}
