@@ -22,7 +22,7 @@
     "gatsby-plugin-layout": "^1.1.18",
     "gatsby-plugin-less": "^3.0.10",
     "gatsby-plugin-manifest": "^2.2.21",
-    "gatsby-plugin-mdx": "^1.0.50",
+    "gatsby-plugin-mdx": "^2.14.1",
     "gatsby-plugin-offline": "^3.0.13",
     "gatsby-plugin-react-helmet": "^3.1.11",
     "gatsby-plugin-sharp": "^2.2.29",
